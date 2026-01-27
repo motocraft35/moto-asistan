@@ -1,0 +1,42 @@
+.map-marker {
+  @apply absolute cursor-pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.holographic-effect {
+  @apply relative;
+}
+
+.holographic-ring {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-orange-500 opacity-50;
+  animation: holographic-ring 1.5s infinite;
+}
+
+.holographic-dot {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-orange-700;
+  animation: holographic-dot 1.5s infinite;
+}
+
+@keyframes holographic-ring {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes holographic-dot {
+  0% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}

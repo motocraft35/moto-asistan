@@ -1,0 +1,37 @@
+import React, { useEffect, useRef } from 'react';
+import { useMap } from 'react-map-gl';
+import { ViewStateTransition } from 'maplibre-gl';
+import MapComponent from './MapComponent';
+
+const MapClient = () => {
+  const map = useMap();
+  const lastViewState = useRef(null);
+
+  useEffect(() => {
+    const transition = new ViewStateTransition({
+      duration: 500,
+      easing: 'cubic-bezier(0.4, 0, 0.6, 1)',
+    });
+
+    return () => {
+      if (lastViewState.current) {
+        transition.cancel();
+      }
+    };
+  }, []);
+
+  const handleViewStateChange = (viewState) => {
+    lastViewState.current = viewState;
+    transition.animate(viewState);
+  };
+
+  map.on('viewstate', handleViewStateChange);
+
+  return (
+    <div>
+      <MapComponent />
+    </div>
+  );
+};
+
+export default MapClient;

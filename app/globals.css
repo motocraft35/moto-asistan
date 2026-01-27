@@ -1,0 +1,460 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Native Feel */
+html,
+body {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  width: 100% !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  position: relative;
+}
+
+/* Prevent image and link dragging/long-press menus */
+img,
+a {
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Leaflet Native Fixes for Mobile */
+.leaflet-marker-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+.standard-blip {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Allow text selection only in specific input fields if needed */
+input,
+textarea {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
+:root {
+  /* Global Colors (Default Cyan) */
+  --background: #050510;
+  --foreground: #ffffff;
+  --primary: #ff00ff;
+  --primary-glow: rgba(255, 0, 255, 0.4);
+  --secondary: #00f3ff;
+  --accent: #8b5cf6;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.1);
+
+  --success: #00FF94;
+  --error: #FF4444;
+
+  --glass-deep: rgba(5, 5, 10, 0.8);
+  --glass-vibrant: rgba(10, 10, 25, 0.45);
+  --glass-border-vibrant: rgba(255, 0, 255, 0.15);
+
+  /* Tactical Palette */
+  --neon-red: #ff003c;
+  --neon-green: #39ff14;
+  --hud-gray: rgba(160, 160, 180, 0.4);
+
+  --font-main: 'Inter', sans-serif;
+  --font-display: 'Rajdhani', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Glow Utilities */
+  --glow-pink: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+  --glow-magenta: 0 0 8px rgba(255, 0, 255, 0.5), 0 0 15px rgba(255, 0, 255, 0.3);
+  --glow-amber: 0 0 8px rgba(245, 158, 11, 0.5), 0 0 15px rgba(245, 158, 11, 0.3);
+  --glow-red: 0 0 8px rgba(239, 68, 68, 0.5), 0 0 15px rgba(239, 68, 68, 0.3);
+}
+
+/* Premium Typography Classes */
+.text-neon-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3),
+    0 0 20px rgba(34, 211, 238, 0.2);
+}
+
+.text-tactical-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.text-micro-data {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #71717a;
+  /* zinc-500 */
+}
+
+.rose-mode {
+  --primary: #ff1e56;
+  --primary-glow: rgba(255, 30, 86, 0.5);
+  --neon-cyan: #ff00ff;
+  --glass-border-vibrant: rgba(255, 0, 255, 0.2);
+}
+
+.rose-mode .text-cyan-400,
+.rose-mode .text-cyan-500 {
+  color: #ff1e56 !important;
+}
+
+.rose-mode .bg-cyan-500 {
+  background-color: #ff1e56 !important;
+}
+
+.rose-mode .border-cyan-500 {
+  border-color: #ff1e56 !important;
+}
+
+.rose-mode .shadow-cyan-500 {
+  box-shadow: 0 0 15px rgba(255, 30, 86, 0.4) !important;
+}
+
+
+/* Ultra-Optimized Glass Cards (60fps Scroll Target) */
+.glass-card {
+  background: rgba(15, 15, 30, 0.7) !important;
+  /* Slightly more opaque, less dependency on blur */
+  backdrop-filter: blur(1px) !important;
+  /* Extreme low blur for scroll performance */
+  -webkit-backdrop-filter: blur(1px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  /* Contain paint helps browser optimize repaints during scroll */
+  contain: content;
+  transform: translateZ(0);
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  transition: 0.5s;
+}
+
+.glass-card:hover::before {
+  left: 100%;
+}
+
+/* HUD Data Points */
+.hud-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  white-space: nowrap;
+}
+
+.hud-tag::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 0 5px var(--primary);
+}
+
+/* Animated Borders */
+@keyframes border-glow {
+
+  0%,
+  100% {
+    border-color: var(--primary);
+    box-shadow: 0 0 15px var(--primary);
+  }
+
+  50% {
+    border-color: rgba(0, 255, 255, 0.2);
+    box-shadow: none;
+  }
+}
+
+/* Tactical Typo System - The "GHOST" Look */
+.text-header-title {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  text-transform: uppercase !important;
+  line-height: 0.9;
+  /* font-style: italic !important; */
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+.text-card-title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase !important;
+  line-height: 1.1;
+  /* font-style: italic !important; */
+  color: #fff;
+}
+
+.text-hud-micro {
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.35em !important;
+  text-transform: uppercase !important;
+  color: var(--hud-gray);
+}
+
+/* Tactical Decorative Elements */
+.bracket-corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--primary);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.bracket-tl {
+  top: 0;
+  left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  box-shadow: -2px -2px 5px var(--primary-glow);
+}
+
+.bracket-tr {
+  top: 0;
+  right: 0;
+  border-left: 0;
+  border-bottom: 0;
+  box-shadow: 2px -2px 5px var(--primary-glow);
+}
+
+.bracket-bl {
+  bottom: 0;
+  left: 0;
+  border-right: 0;
+  border-top: 0;
+  box-shadow: -2px 2px 5px var(--primary-glow);
+}
+
+.bracket-br {
+  bottom: 0;
+  right: 0;
+  border-left: 0;
+  border-top: 0;
+  box-shadow: 2px 2px 5px var(--primary-glow);
+}
+
+/* Grid Standards */
+.card-map {
+  height: 140px !important;
+}
+
+.card-med {
+  height: 130px !important;
+}
+
+.card-small {
+  height: 100px !important;
+}
+
+/* Enhanced Neon Flicker */
+@keyframes neon-flicker-intense {
+
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+    text-shadow:
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px var(--primary),
+      0 0 82px var(--primary);
+  }
+
+  20%,
+  24%,
+  55% {
+    text-shadow: none;
+  }
+}
+
+/* Cyberpunk Logo Animation */
+.logo-animate {
+  animation: logo-flicker 3s infinite;
+  position: relative;
+  display: inline-block;
+  will-change: filter, transform;
+  /* GPU boost */
+}
+
+.logo-animate::before,
+.logo-animate::after {
+  content: "MOTOCRAFT";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+
+.logo-animate::before {
+  color: #0ff;
+  z-index: -1;
+  animation: glitch-offset 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+}
+
+.logo-animate::after {
+  color: #f0f;
+  z-index: -2;
+  animation: glitch-offset 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+}
+
+@keyframes logo-flicker {
+
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+    text-shadow:
+      0 0 4px #fff,
+      0 0 11px #fff,
+      0 0 19px #fff,
+      0 0 40px var(--primary),
+      0 0 80px var(--primary),
+      0 0 90px var(--primary),
+      0 0 100px var(--primary),
+      0 0 150px var(--primary);
+  }
+
+  20%,
+  24%,
+  55% {
+    text-shadow: none;
+  }
+}
+
+@keyframes glitch-offset {
+  0% {
+    transform: translate(0);
+  }
+
+  20% {
+    transform: translate(-2px, 2px);
+  }
+
+  40% {
+    transform: translate(-2px, -2px);
+  }
+
+  60% {
+    transform: translate(2px, 2px);
+  }
+
+  80% {
+    transform: translate(2px, -2px);
+  }
+
+  100% {
+    transform: translate(0);
+  }
+}
+
+.animate-border-glow {
+  animation: border-glow 2s infinite ease-in-out;
+}
+
+/* Scanner Beam */
+@keyframes scanner-y {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(400%);
+  }
+}
+
+.scanner-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+  opacity: 0.5;
+  box-shadow: 0 0 15px var(--neon-cyan);
+  animation: scanner-y 3s linear infinite;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* GPU Optimization Utility - Force Hardware Layer */
+.gpu-boost {
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+/* Custom Cyberpunk Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-glow);
+}

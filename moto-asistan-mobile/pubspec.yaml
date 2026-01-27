@@ -1,0 +1,28 @@
+name: moto_asistan_mobile
+description: GHOST GEAR - Moto Asistan Mobile Application
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  google_maps_flutter: ^2.5.0
+  http: ^1.1.0
+  geolocator: ^10.1.0
+  provider: ^6.0.5
+  google_fonts: ^6.1.0
+  intl: ^0.18.1
+  mobile_scanner: ^5.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/

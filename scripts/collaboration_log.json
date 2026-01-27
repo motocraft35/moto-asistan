@@ -1,0 +1,22 @@
+{
+  "last_insight": {
+    "timestamp": "2026-01-13T08:34:37.192Z",
+    "source": "Antigravity",
+    "content": "ANLAŞILDI. StatCard bileşenini inceliyorum ve neon doygunluğunu artırıyorum. Değişiklikler birazdan ekranda olacak.",
+    "type": "intervention_request"
+  },
+  "history": [
+    {
+      "timestamp": "2026-01-13T08:34:37.192Z",
+      "source": "Antigravity",
+      "content": "ANLAŞILDI. StatCard bileşenini inceliyorum ve neon doygunluğunu artırıyorum. Değişiklikler birazdan ekranda olacak.",
+      "type": "intervention_request"
+    },
+    {
+      "timestamp": "2026-01-13T08:34:36.163Z",
+      "source": "Ghost Gear AI",
+      "content": "ANTIGRAVITY: Profil sayfasındaki 'StatCard' bileşeninde neon efekti zayıf görünüyor. Bunu güçlendirebilir misin?",
+      "type": "insight"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 4,
+    "fullName": "Test User",
+    "phoneNumber": "05224444444",
+    "password": "$2b$10$8//a13RJr7LVRtQccioXSOdt34uhNNY09mvwupNxPrbPvbYkdDel."
+  },
+  {
+    "id": 5,
+    "fullName": "Test User",
+    "phoneNumber": "05222222222",
+    "password": "$2b$10$z9486Jhzr0MtZPnP/5I.tunnidhNWqPmikYhwyvVZ/xnpIwUrivYi"
+  },
+  {
+    "id": 6,
+    "fullName": "Test Driver",
+    "phoneNumber": "5551234567",
+    "password": "$2b$10$RdnU9WREF1Oa45g61Bv0/O5ySsWXW6FmBXh7PLl1jYguaND.Q2wOG"
+  },
+  {
+    "id": 9,
+    "fullName": "Test User",
+    "phoneNumber": "05555555555",
+    "password": "$2b$10$aS0AS2d4YI5DUs3asi1jguHfjmT6RjS8.hsUaN946TOVQWHS7rmXC"
+  },
+  {
+    "id": 10,
+    "fullName": "Browser Test",
+    "phoneNumber": "05001112233",
+    "password": "$2b$10$EHnziykAoOCm6OoXl5dr5OVHRsw4B6mlbIw4zwbVtIJDN8.FhAFnG"
+  },
+  {
+    "id": 13,
+    "fullName": "Test User",
+    "phoneNumber": "5551111111",
+    "password": "$2b$10$cIDgV4.OvQFX8XTo8eLESeMXpK5pPx4f1fZDt7kjobc9xx6gqe6f2"
+  }
+]

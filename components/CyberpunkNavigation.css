@@ -1,0 +1,63 @@
+@keyframes showHolographicMenu {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cyberpunk-holographic-menu {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  animation: showHolographicMenu 0.5s ease-in-out;
+  display: none;
+}
+
+.cyberpunk-holographic-menu.show {
+  display: block;
+}
+
+.cyberpunk-navigation-button {
+  @apply text-lg font-bold transition duration-300;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: #444;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  position: relative;
+}
+
+.cyberpunk-navigation-button:hover {
+  background-color: #555;
+}
+
+.cyberpunk-navigation-button:active {
+  background-color: #444;
+}
+
+.cyberpunk-navigation-button::before {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ff69b4;
+  transform: rotateY(0deg);
+  transition: transform 0.2s ease-in-out;
+}
+
+.cyberpunk-navigation-button:hover::before {
+  transform: rotateY(90deg);
+}
+
+.cyberpunk-navigation-button:active::before {
+  transform: rotateY(-90deg);
+}

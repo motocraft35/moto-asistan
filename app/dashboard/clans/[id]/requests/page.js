@@ -1,0 +1,155 @@
+'use client';
+
+import { useState, useEffect, use } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNotifications } from '@/app/components/NotificationProvider';
+
+export default function ClanRequestsPage({ params }) {
+    const { id } = use(params); // clanId
+    const { showAlert } = useNotifications();
+    const [requests, setRequests] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (id) fetchRequests();
+    }, [id]);
+
+    const fetchRequests = async () => {
+        try {
+            const res = await fetch(`/api/clans/${id}/requests`);
+            const data = await res.json();
+            if (data.success) {
+                setRequests(data.requests);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleAction = async (requestId, action) => {
+        try {
+            const res = await fetch(`/api/clans/requests/${requestId}`, {
+                method: 'POST',
+                body: JSON.stringify({ action })
+            });
+            if (res.ok) {
+                setRequests(requests.filter(r => r.id !== requestId));
+            } else {
+                const data = await res.json();
+                showAlert(data.error);
+            }
+        } catch (error) {
+            showAlert('Hata oluştu.');
+        }
+    };
+
+    return (
+        <div style={{
+            minHeight: '100vh',
+            background: 'linear-gradient(to bottom, #000, #0a0a0a)',
+            color: '#fff',
+            padding: '20px',
+            fontFamily: 'Inter, system-ui, sans-serif'
+        }}>
+            <header style={{ marginBottom: '30px' }}>
+                <h1 style={{ fontSize: '1.8rem', fontWeight: '900' }}>🛡️ KATILIM <span style={{ color: '#ffd700' }}>İSTEKLERİ</span></h1>
+                <p style={{ color: '#666', fontSize: '0.85rem' }}>Klanına katılmak isteyen üyeleri buradan yönetebilirsin.</p>
+            </header>
+
+            <div style={{ maxWidth: '500px', margin: 'auto' }}>
+                {loading ? (
+                    <div style={{ textAlign: 'center', padding: '50px', color: '#444' }}>Yükleniyor...</div>
+                ) : requests.length > 0 ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                        <AnimatePresence>
+                            {requests.map((req) => (
+                                <motion.div
+                                    key={req.id}
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.95, x: 50 }}
+                                    style={{
+                                        background: 'rgba(255,255,255,0.03)',
+                                        border: '1px solid rgba(255,255,255,0.05)',
+                                        borderRadius: '20px',
+                                        padding: '15px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '15px'
+                                    }}
+                                >
+                                    <div style={{
+                                        width: '50px',
+                                        height: '50px',
+                                        background: '#222',
+                                        borderRadius: '50%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        overflow: 'hidden'
+                                    }}>
+                                        {req.profileImage ? <img src={req.profileImage} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="" /> : '👤'}
+                                    </div>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontWeight: '700' }}>{req.fullName}</div>
+                                        <div style={{ fontSize: '0.7rem', color: '#666' }}>{new Date(req.createdAt).toLocaleDateString()}</div>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <button
+                                            onClick={() => handleAction(req.id, 'reject')}
+                                            style={{
+                                                background: 'rgba(255,0,0,0.1)',
+                                                color: '#ff4444',
+                                                border: 'none',
+                                                padding: '8px 12px',
+                                                borderRadius: '10px',
+                                                fontSize: '0.8rem',
+                                                fontWeight: '700',
+                                                cursor: 'pointer'
+                                            }}
+                                        >REDDET</button>
+                                        <button
+                                            onClick={() => handleAction(req.id, 'accept')}
+                                            style={{
+                                                background: '#ffd700',
+                                                color: '#000',
+                                                border: 'none',
+                                                padding: '8px 12px',
+                                                borderRadius: '10px',
+                                                fontSize: '0.8rem',
+                                                fontWeight: '900',
+                                                cursor: 'pointer'
+                                            }}
+                                        >ONAYLA</button>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
+                    </div>
+                ) : (
+                    <div style={{
+                        textAlign: 'center',
+                        padding: '60px 20px',
+                        background: 'rgba(255,255,255,0.01)',
+                        border: '1px dashed rgba(255,255,255,0.1)',
+                        borderRadius: '24px',
+                        color: '#444'
+                    }}>
+                        Bekleyen istek bulunmuyor.
+                    </div>
+                )}
+            </div>
+
+            <div style={{ textAlign: 'center', marginTop: '30px' }}>
+                <button
+                    onClick={() => window.history.back()}
+                    style={{ background: 'transparent', color: '#555', border: 'none', cursor: 'pointer', fontSize: '0.9rem' }}
+                >
+                    ← Geri Dön
+                </button>
+            </div>
+        </div>
+    );
+}

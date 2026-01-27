@@ -1,0 +1,87 @@
+.neon-hologram {
+  @apply relative;
+  width: 200px;
+  height: 200px;
+  perspective: 800px;
+}
+
+.hologram {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease-in-out;
+}
+
+.motorcycle {
+  @apply bg-black;
+  width: 100px;
+  height: 50px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.motorcycle::before,
+.motorcycle::after {
+  @apply absolute top-0 left-0 w-full h-full;
+  content: '';
+  background-color: #ff69b4;
+}
+
+.motorcycle::before {
+  transform: rotateY(90deg);
+}
+
+.motorcycle::after {
+  transform: rotateY(-90deg);
+}
+
+.neon-lights {
+  @apply absolute top-0 left-0 w-full h-full;
+}
+
+.light {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #ff69b4;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.light:nth-child(1) {
+  top: 20px;
+  left: 20px;
+}
+
+.light:nth-child(2) {
+  top: 20px;
+  right: 20px;
+}
+
+.light:nth-child(3) {
+  bottom: 20px;
+  right: 20px;
+}
+
+.light:nth-child(4) {
+  bottom: 20px;
+  left: 20px;
+}
+
+.light::before,
+.light::after {
+  @apply absolute top-0 left-0 w-full h-full;
+  content: '';
+  background-color: #ff69b4;
+}
+
+.light::before {
+  transform: rotateY(90deg);
+}
+
+.light::after {
+  transform: rotateY(-90deg);
+}

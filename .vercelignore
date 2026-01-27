@@ -1,0 +1,22 @@
+node_modules
+.next
+.idea
+.git
+android
+ios
+capacitor.config.ts
+*.db
+*.log
+*.txt
+# Sadece gereksiz scriptleri engelle, uygulama kodlarını (route.js, page.js vb.) DEĞİL!
+debug-*.js
+test-*.js
+verify-*.js
+list-models.js
+run-init.js
+deploy.ps1
+moto-asistan-mobile
+brain
+.gemini
+public/uploads
+package-lock.json

@@ -1,0 +1,37 @@
+.cyberpunk-button {
+  @apply relative;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: #333;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.cyberpunk-button:hover {
+  background-color: #555;
+}
+
+.cyberpunk-button:active {
+  background-color: #444;
+}
+
+.cyberpunk-button::before {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ff69b4;
+  transform: rotateY(0deg);
+  transition: transform 0.2s ease-in-out;
+}
+
+.cyberpunk-button:hover::before {
+  transform: rotateY(90deg);
+}
+
+.cyberpunk-button:active::before {
+  transform: rotateY(-90deg);
+}

@@ -1,0 +1,74 @@
+.mapbox {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.mapbox-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.mapbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mapbox-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mapbox-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: opacity 0.5s;
+}
+
+.mapbox-marker:hover {
+  opacity: 1;
+}
+
+.mapbox-marker:focus {
+  opacity: 1;
+}
+
+.mapbox-marker:active {
+  opacity: 1;
+}
+
+.mapbox-marker::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: opacity 0.5s;
+}
+
+.mapbox-marker:hover::before {
+  opacity: 1;
+}
+
+.mapbox-marker:focus::before {
+  opacity: 1;
+}
+
+.mapbox-marker:active::before {
+  opacity: 1;
+}

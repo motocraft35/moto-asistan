@@ -1,0 +1,110 @@
+﻿node.exe : C:\Users
+\MotoCraft\.gemini\
+antigravity\scratch
+\moto-asistan\node_
+modules\vercel\dist
+\index.js:35410
+At line:1 char:1
++ & "C:\Program Fil
+es\nodejs/node.exe"
+ "C:\Program Files\
+nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~
+    + CategoryInfo 
+             : No  
+  tSpecified: (C   
+ :\Users\MotoCr    
+...\index.js:3    5
+410:String) [    ],
+ RemoteExcep    tio
+n
+    + FullyQualifi 
+   edErrorId : Na  
+  tiveCommandErr   
+ or
+ 
+                thr
+ow new ArgError(`op
+tion requires argum
+ent: ${originalArgN
+ame}${extended}`, "
+ARG_MISSING_REQUIRE
+D_LONGARG");
+                ^
+
+_ArgError: option r
+equires argument: -
+-token
+    at arg2 (C:\Use
+rs\MotoCraft\.gemin
+i\antigravity\scrat
+ch\moto-asistan\nod
+e_modules\vercel\di
+st\index.js:35410:2
+3)
+    at getArgs (C:\
+Users\MotoCraft\.ge
+mini\antigravity\sc
+ratch\moto-asistan\
+node_modules\vercel
+\dist\index.js:3543
+6:33)
+    at getGlobalPat
+hConfig (C:\Users\M
+otoCraft\.gemini\an
+tigravity\scratch\m
+oto-asistan\node_mo
+dules\vercel\dist\i
+ndex.js:44953:20)
+    at src/util/con
+fig/files.ts (C:\Us
+ers\MotoCraft\.gemi
+ni\antigravity\scra
+tch\moto-asistan\no
+de_modules\vercel\d
+ist\index.js:92746:
+19)
+    at __init (C:\U
+sers\MotoCraft\.gem
+ini\antigravity\scr
+atch\moto-asistan\n
+ode_modules\vercel\
+dist\index.js:10:60
+)
+    at src/util/cli
+ent.ts (C:\Users\Mo
+toCraft\.gemini\ant
+igravity\scratch\mo
+to-asistan\node_mod
+ules\vercel\dist\in
+dex.js:92876:5)
+    at __init (C:\U
+sers\MotoCraft\.gem
+ini\antigravity\scr
+atch\moto-asistan\n
+ode_modules\vercel\
+dist\index.js:10:60
+)
+    at Object.<anon
+ymous> (C:\Users\Mo
+toCraft\.gemini\ant
+igravity\scratch\mo
+to-asistan\node_mod
+ules\vercel\dist\in
+dex.js:190433:1)
+    at Module._comp
+ile (node:internal/
+modules/cjs/loader:
+1761:14)
+    at Object..js (
+node:internal/modul
+es/cjs/loader:1893:
+10) {
+  code: 'ARG_MISSIN
+G_REQUIRED_LONGARG'
+}
+
+Node.js v24.11.1
