@@ -8,15 +8,13 @@ export default async function Page() {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get('auth_session');
 
-  // If already logged in, redirect to dashboard
+  // If already logged in (either via JWT or custom session), redirect to dashboard
   if (userId || sessionCookie) {
+    console.log('[Root Page] Session detected, redirecting to dashboard');
     redirect('/dashboard');
   }
 
-  // Otherwise, show login page with auto-restore capability
-  return (
-    <>
-      <AutoSessionRestorer />
-    </>
-  );
+  // If no session, the app needs to show the login UI.
+  // In this app, /login is the main entry point if not redirected.
+  redirect('/login');
 }
