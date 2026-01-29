@@ -64,10 +64,8 @@ export default function DashboardLayout({ children }) {
                     if (cached) {
                         console.log('[Dashboard] No server session but cache exists, AutoSessionRestorer will handle');
                         setUser(JSON.parse(cached));
-                    } else {
-                        console.log('[Dashboard] No session found, redirecting to login');
-                        window.location.href = '/';
                     }
+                    // REDUNDANT REDIRECT REMOVED: Middleware handles authentication protection at the request level.
                 }
             } catch (err) {
                 console.error('Persistence Guard Failure:', err);
