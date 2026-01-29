@@ -9,8 +9,11 @@ export default function LogoutButton() {
         localStorage.removeItem('moto_party');
         console.log('[Logout] localStorage cleared');
 
-        // Call server action
+        // Call server action to clear cookies
         await logoutUser();
+
+        // Immediate hard redirect to prevent white screen in some mobile environments
+        window.location.href = '/';
     };
 
     return (
