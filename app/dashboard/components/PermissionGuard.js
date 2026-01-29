@@ -41,11 +41,18 @@ export default function PermissionGuard({ onGranted }) {
         }
 
         const currentStatus = { geolocation: geoState, microphone: micState };
+
+        // Prevent constant onGranted trigger if already granted
+        const wasAlreadyGranted = status.geolocation === 'granted' && status.microphone === 'granted';
+        const isNowGranted = currentStatus.geolocation === 'granted' && currentStatus.microphone === 'granted';
+
         setStatus(currentStatus);
 
-        if (currentStatus.geolocation === 'granted' && currentStatus.microphone === 'granted') {
+        if (isNowGranted) {
             setIsVisible(false);
-            onGranted && onGranted();
+            if (!wasAlreadyGranted && onGranted) {
+                onGranted();
+            }
         } else {
             setIsVisible(true);
         }

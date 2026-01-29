@@ -47,14 +47,30 @@ export async function registerUser(formData) {
     const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
     const maxAgeSeconds = 30 * 24 * 60 * 60;
 
-    (await cookies()).set('auth_session', encodeURIComponent(JSON.stringify({ phone: phoneNumber, token: sessionToken })), {
-        httpOnly: true,
-        secure: false, // Compatibility for WebViews/Localhost
+    const cookieStore = await cookies();
+
+    cookieStore.set('auth_session', encodeURIComponent(JSON.stringify({ phone: phoneNumber, token: sessionToken })), {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
         expires: expiresAt,
         maxAge: maxAgeSeconds,
         sameSite: 'lax',
         path: '/',
     });
+
+    // Also establish the JWT session for the Root redirect to work
+    try {
+        const { createSession } = await import('@/lib/auth');
+        const userResult = await db.execute({
+            sql: 'SELECT id FROM users WHERE phoneNumber = ?',
+            args: [phoneNumber]
+        });
+        if (userResult.rows[0]) {
+            await createSession(userResult.rows[0].id);
+        }
+    } catch (e) {
+        console.error('Failed to create JWT session during registration:', e);
+    }
 
     redirect('/dashboard');
 }
@@ -177,10 +193,15 @@ export async function loginUser(prevState, formData) {
             args: [normalizedPhone, withZero]
         });
         const user = result.rows[0];
-
         if (!user) {
             return { message: 'Kullanıcı bulunamadı. Lütfen kayıt olun.' };
         }
+
+        // Normalize BigInt values for Next.js serialization
+        if (user.id) user.id = Number(user.id);
+        if (user.partsUsageCount) user.partsUsageCount = Number(user.partsUsageCount);
+        if (user.respectPoints) user.respectPoints = Number(user.respectPoints);
+        if (user.isMaster) user.isMaster = Number(user.isMaster);
 
         if (user.password) {
             const passwordMatch = await bcrypt.compare(password, user.password);
@@ -201,24 +222,36 @@ export async function loginUser(prevState, formData) {
         const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
         const maxAgeSeconds = 30 * 24 * 60 * 60;
 
-        (await cookies()).set('auth_session', encodeURIComponent(JSON.stringify({ phone: user.phoneNumber, token: newSessionToken })), {
-            httpOnly: true,
-            secure: false,
+        const cookieStore = await cookies();
+
+        cookieStore.set('auth_session', encodeURIComponent(JSON.stringify({ phone: user.phoneNumber, token: newSessionToken })), {
+            httpOnly: false,
+            secure: process.env.NODE_ENV === 'production',
             expires: expiresAt,
             maxAge: maxAgeSeconds,
             sameSite: 'lax',
             path: '/',
         });
 
+        // Also establish the JWT session for the Root redirect to work
+        try {
+            const { createSession } = await import('@/lib/auth');
+            await createSession(user.id);
+        } catch (e) {
+            console.error('Failed to create JWT session during login:', e);
+        }
+
+        return { success: true, user: { id: user.id, phoneNumber: user.phoneNumber, sessionToken: newSessionToken, fullName: user.fullName } };
+
     } catch (error) {
         return { message: 'Giriş yapılamadı: ' + error.message };
     }
-
-    redirect('/dashboard');
 }
 
 export async function logoutUser() {
-    (await cookies()).delete('auth_session');
+    const cookieStore = await cookies();
+    cookieStore.delete('auth_session');
+    cookieStore.delete('session_token'); // Delete JWT session as well
     redirect('/');
 }
 
@@ -227,24 +260,33 @@ export async function restoreSession(phoneNumber, token) {
         if (!phoneNumber || !token) return { success: false };
 
         const result = await db.execute({
-            sql: 'SELECT id FROM users WHERE phoneNumber = ? AND sessionToken = ?',
+            sql: 'SELECT id, phoneNumber FROM users WHERE phoneNumber = ? AND sessionToken = ?',
             args: [phoneNumber, token]
         });
 
-        if (!result.rows[0]) return { success: false };
+        const user = result.rows[0];
+        if (!user) return { success: false };
 
         // Restoration valid - Set Cookie
         const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
         const maxAgeSeconds = 30 * 24 * 60 * 60;
 
         (await cookies()).set('auth_session', encodeURIComponent(JSON.stringify({ phone: phoneNumber, token: token })), {
-            httpOnly: true,
-            secure: false,
+            httpOnly: false,
+            secure: process.env.NODE_ENV === 'production',
             expires: expiresAt,
             maxAge: maxAgeSeconds,
             sameSite: 'lax',
             path: '/',
         });
+
+        // Also re-establish the JWT session for getUserId() to work
+        try {
+            const { createSession } = await import('@/lib/auth');
+            await createSession(Number(user.id));
+        } catch (e) {
+            console.error('Failed to create JWT session during restoration:', e);
+        }
 
         return { success: true };
     } catch (e) {

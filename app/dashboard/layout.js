@@ -9,6 +9,7 @@ import PartyHUD from './components/PartyHUD';
 import IntercomControl from './components/IntercomControl';
 import PartyManager from './components/PartyManager';
 import PermissionGuard from './components/PermissionGuard';
+import AutoSessionRestorer from '../components/AutoSessionRestorer';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const API_BASE_URL = '';
@@ -35,12 +36,38 @@ export default function DashboardLayout({ children }) {
                 const data = await res.json();
                 if (data.user) {
                     setUser(data.user);
+
                     // Sync to storage for offline persistence
-                    localStorage.setItem('moto_user', JSON.stringify(data.user));
-                } else {
-                    // Cache check
                     const cached = localStorage.getItem('moto_user');
-                    if (cached) setUser(JSON.parse(cached));
+                    if (cached) {
+                        const cachedData = JSON.parse(cached);
+                        // Preserve sessionToken during sync
+                        const hasChanged = JSON.stringify(data.user) !== JSON.stringify({ ...cachedData, sessionToken: undefined, cachedAt: undefined });
+                        if (hasChanged || !cachedData.cachedAt) {
+                            localStorage.setItem('moto_user', JSON.stringify({
+                                ...data.user,
+                                sessionToken: cachedData.sessionToken,
+                                cachedAt: new Date().toISOString()
+                            }));
+                            console.log('[Dashboard] localStorage synced (preserved token)');
+                        }
+                    } else {
+                        // No cache exists, create it
+                        localStorage.setItem('moto_user', JSON.stringify({
+                            ...data.user,
+                            cachedAt: new Date().toISOString()
+                        }));
+                    }
+                } else {
+                    // No server session - check if we should attempt restore
+                    const cached = localStorage.getItem('moto_user');
+                    if (cached) {
+                        console.log('[Dashboard] No server session but cache exists, AutoSessionRestorer will handle');
+                        setUser(JSON.parse(cached));
+                    } else {
+                        console.log('[Dashboard] No session found, redirecting to login');
+                        window.location.href = '/';
+                    }
                 }
             } catch (err) {
                 console.error('Persistence Guard Failure:', err);
@@ -176,6 +203,9 @@ export default function DashboardLayout({ children }) {
 
     return (
         <div className="min-h-screen bg-black text-white relative flex flex-col">
+            {/* Auto Session Restorer */}
+            <AutoSessionRestorer />
+
             {/* Tactical Permission Shield */}
             <PermissionGuard onGranted={() => console.log('Systems Operational')} />
 

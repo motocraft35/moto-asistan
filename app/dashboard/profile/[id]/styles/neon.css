@@ -1,0 +1,29 @@
+.neon {
+  color: #fff;
+  text-shadow: 0 0 10px #ff69b4;
+}
+
+.neon-text {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.neon-button {
+  background-color: #ff69b4;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.neon-button:hover {
+  background-color: #ff69b4;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

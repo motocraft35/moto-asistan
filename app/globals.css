@@ -458,3 +458,33 @@ textarea {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: var(--primary-glow);
 }
+
+/* Holographic Scan Animation */
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+/* Shimmer Animation for XP Bar */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

@@ -5,7 +5,8 @@ import db from '../../lib/db';
 import DynamicServiceCode from './components/DynamicServiceCode';
 import NotificationManager from './notifications/client';
 import WeatherBar from './components/WeatherBar';
-import { logoutUser, getDashboardData } from '../actions';
+import LogoutButton from './components/LogoutButton';
+import { getDashboardData } from '../actions';
 import SearchTrigger from './components/SearchTrigger';
 import SOSButton from './components/SOSButton';
 import OnlineCounter from './components/OnlineCounter';
@@ -29,6 +30,14 @@ export default async function DashboardPage() {
         user = await getDashboardData();
     }
 
+    // Sanitize user object for serialization
+    if (user) {
+        user = JSON.parse(JSON.stringify(user));
+        // Explicit BigInt to Number conversion just in case
+        if (user.id) user.id = Number(user.id);
+        if (user.partsUsageCount) user.partsUsageCount = Number(user.partsUsageCount);
+    }
+
     // Real Statistics fetching
     let totalUsers = 0;
     try {
@@ -47,7 +56,7 @@ export default async function DashboardPage() {
             sql: "SELECT COUNT(*) as count FROM users WHERE lastHeartbeat > datetime('now', '-5 minutes')",
             args: []
         });
-        onlinePilotsCount = res.rows[0]?.count || 0;
+        onlinePilotsCount = Number(res.rows[0]?.count || 0);
     } catch (e) {
         console.error("Online pilots fetch failed:", e);
     }
@@ -321,12 +330,7 @@ export default async function DashboardPage() {
                         </div>
                     </div>
 
-                    <form action={logoutUser}>
-                        <button type="submit" className="w-full py-3 bg-red-600/5 border border-red-500/20 text-red-500 rounded-xl text-[8px] font-black uppercase italic tracking-[0.4em] hover:bg-red-600 hover:text-white transition-all overflow-hidden relative group/logout">
-                            <div className="absolute inset-0 bg-white/10 translate-y-full group-hover/logout:translate-y-0 transition-transform" />
-                            <span className="relative z-10">OTURUMU SONLANDIR</span>
-                        </button>
-                    </form>
+                    <LogoutButton />
 
                     <div className="text-[8px] text-zinc-800 font-black uppercase tracking-[1em] opacity-40">
                         MOTO-ASİSTAN // V3.1.0

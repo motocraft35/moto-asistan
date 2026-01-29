@@ -1,8 +1,9 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState, useState, useEffect } from 'react';
 import { loginUser } from '../actions';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const initialState = {
     message: '',
@@ -11,6 +12,25 @@ const initialState = {
 export default function LoginForm() {
     const [state, formAction, isPending] = useActionState(loginUser, initialState);
     const [showPassword, setShowPassword] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+        if (state?.success && state?.user) {
+            // Cache user WITH sessionToken for persistence restoration
+            const userDataToCache = {
+                id: state.user.id,
+                phoneNumber: state.user.phoneNumber,
+                sessionToken: state.user.sessionToken,
+                fullName: state.user.fullName,
+                cachedAt: new Date().toISOString()
+            };
+            localStorage.setItem('moto_user', JSON.stringify(userDataToCache));
+            console.log('[LoginForm] User session cached for persistence');
+
+            // Redirect to dashboard
+            router.push('/dashboard');
+        }
+    }, [state, router]);
 
     return (
         <form action={formAction} className="w-full space-y-8">
